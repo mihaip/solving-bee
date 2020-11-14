@@ -1,0 +1,7 @@
+*.xcworkspace
+*.xcuserstate
+xcuserdata
+
+# The Create ML project is not that useful and ends up bloating the repository
+# size (it contains a copy of the trained model).
+*.mlproj

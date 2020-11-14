@@ -1,0 +1,19 @@
+<annotation>
+    <folder>Training Data</folder>
+    <filename>IMG_0004.jpeg</filename>
+    <size>
+        <width>2448</width>
+        <height>3264</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Board</name>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>955</xmin>
+            <ymin>1655</ymin>
+            <xmax>1687</xmax>
+            <ymax>2392</ymax>
+        </bndbox>
+    </object>
+</annotation>
