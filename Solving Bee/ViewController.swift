@@ -4,121 +4,25 @@ import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
-let LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
-class LetterCandidates {
-    // Map from letter index (0-6) to letter to count
-    private var storage: [Int: [String: Int]] = [:]
-
-    func add(letter: String, index: Int) {
-        var letter = letter
-        if letter == "0" {
-            letter = "O"
-        }
-        if !LETTERS.contains(letter) {
-            return
-        }
-        storage[index, default: [:]][letter, default: 0] += 1
-    }
-
-    func reset() {
-        storage = [:]
-    }
-
-    func results() -> [String]? {
-        if storage.count != 7 {
-            return nil
-        }
-        var result = [String]()
-        for i in 0...6 {
-            var topCandidate: String?
-            var topCandidateCount = 0
-            for (candidate, count) in storage[i]! {
-                if (count > topCandidateCount) {
-                    topCandidate = candidate
-                    topCandidateCount = count
-                }
-            }
-            if let candidate = topCandidate {
-                if topCandidateCount > 5 {
-                    result.append(candidate)
-                    continue
-                }
-            }
-            return nil
-        }
-        return result
-    }
-
-    func detectionConfidence() -> Double {
-        var matchedLetters = 0
-        for i in 0...6 {
-            if let letterStorage = storage[i] {
-                for (_, count) in letterStorage {
-                    if count > 5 {
-                        matchedLetters += 1
-                        break
-                    }
-                }
-            }
-        }
-        return Double(matchedLetters) / 6.0
-    }
-}
-
-class ReticleView: UIView {
-    private var reticleView: UIImageView!
-    private var detectedOverlayView: UIImageView!
-
-    override init(frame: CGRect) {
-        super.init(frame:frame)
-
-        reticleView = UIImageView(frame:self.bounds)
-        reticleView.image = UIImage(named:"Reticle")
-        self.addSubview(self.reticleView)
-
-        detectedOverlayView = UIImageView(frame:self.bounds)
-        detectedOverlayView.image = UIImage(named:"ReticleDetectedOverlay")
-        detectedOverlayView.alpha = 0.0
-        self.addSubview(self.detectedOverlayView)
-    }
-
-    var detectionConfidence: Double {
-        get {
-            Double(detectedOverlayView.alpha)
-        }
-        set {
-            detectedOverlayView.alpha = CGFloat(newValue)
-            let scale = 1.0 + CGFloat(newValue / 3)
-            let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)
-            UIView.animate(withDuration: 0.2) {
-                self.detectedOverlayView.layer.setAffineTransform(scaleTransform)
-                self.reticleView.layer.setAffineTransform(scaleTransform)
-            }
-        }
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Unused")
-    }
-}
+let BOARD_DETECTION_MIN_CONFIDENCE: VNConfidence = 0.2
 
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     private var previewView: PreviewView!
     private var reticleView: ReticleView!
+#if SHOW_VISION_IMAGE
     private var visionImageView: UIImageView!
+#endif
     private var boardTextView: UILabel!
+
     private var letterCandidates = LetterCandidates()
 
-    // MARK: - Capture related objects
     private let captureSession = AVCaptureSession()
-    let captureSessionQueue = DispatchQueue(label: "com.example.apple-samplecode.CaptureSessionQueue")
+    let captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
     var captureDevice: AVCaptureDevice?
     var videoDataOutput = AVCaptureVideoDataOutput()
-    let videoDataOutputQueue = DispatchQueue(label: "com.example.apple-samplecode.VideoDataOutputQueue")
+    let videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
 
     private var boardDetectionRequest: VNCoreMLRequest!
-    private let boardDetectionMinConfidence: VNConfidence = 0.2
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,9 +46,11 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             print("Could not create Vision request for board detector")
         }
 
+#if SHOW_VISION_IMAGE
         visionImageView = UIImageView(frame: self.view.bounds)
         visionImageView.isHidden = true
         self.view.addSubview(visionImageView)
+#endif
 
         let (boardTextFrame, _) = self.view.bounds.divided(atDistance: 120, from: .minYEdge)
         boardTextView = UILabel(frame: boardTextFrame)
@@ -180,21 +86,14 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             captureSession.addInput(deviceInput)
         }
 
-        // Configure video data output.
         videoDataOutput.alwaysDiscardsLateVideoFrames = true
         videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
         if captureSession.canAddOutput(videoDataOutput) {
             captureSession.addOutput(videoDataOutput)
-            // NOTE:
-            // There is a trade-off to be made here. Enabling stabilization will
-            // give temporally more stable results and should help the recognizer
-            // converge. But if it's enabled the VideoDataOutput buffers don't
-            // match what's displayed on screen, which makes drawing bounding
-            // boxes very hard. Disable it in this app to allow drawing detected
-            // bounding boxes on screen.
             let connection = videoDataOutput.connection(with: AVMediaType.video)
-            connection?.preferredVideoStabilizationMode = .off
+            // Force portait orientation so that we don't need to worry about
+            // coordinate conversions when creating CIImages
             connection?.videoOrientation = .portrait
         } else {
             print("Could not add VDO output")
@@ -202,15 +101,15 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
 
         // Set zoom and autofocus to help focus on very small text.
-        //        do {
-        //            try captureDevice.lockForConfiguration()
-        //            captureDevice.videoZoomFactor = 2
-        //            captureDevice.autoFocusRangeRestriction = .near
-        //            captureDevice.unlockForConfiguration()
-        //        } catch {
-        //            print("Could not set zoom level due to error: \(error)")
-        //            return
-        //        }
+        do {
+            try captureDevice.lockForConfiguration()
+            captureDevice.videoZoomFactor = 2
+            captureDevice.autoFocusRangeRestriction = .near
+            captureDevice.unlockForConfiguration()
+        } catch {
+            print("Could not set zoom level due to error: \(error)")
+            return
+        }
 
         captureSession.startRunning()
     }
@@ -225,7 +124,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             var visionImage: CIImage?
             var detectionConfidence: Double = 0.0
             if let results = boardDetectionRequest.results as? [VNDetectedObjectObservation] {
-                let filteredResults = results.filter { $0.confidence > boardDetectionMinConfidence }
+                let filteredResults = results.filter { $0.confidence > BOARD_DETECTION_MIN_CONFIDENCE }
                 if !filteredResults.isEmpty {
                     detectionConfidence = Double(filteredResults[0].confidence)
                     let visionRect = filteredResults[0].boundingBox
@@ -306,17 +205,26 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
 
     func showMatchRect(visionImage: CIImage?) {
-//        if let visionImage = visionImage {
-//            visionImageView.isHidden = false
-//            // Avoid issues with displaying of cropped images (from https://stackoverflow.com/a/46965963/343108)
-//            let ciContext = CIContext()
-//            if let cgImage = ciContext.createCGImage(visionImage, from: visionImage.extent) {
-//                visionImageView.image = UIImage(cgImage: cgImage)
-//                visionImageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: visionImageView.image!.size)
-//            }
-//        } else {
-//            visionImageView.isHidden = true
-//        }
+#if SHOW_VISION_IMAGE
+        if let visionImage = visionImage {
+            visionImageView.isHidden = false
+            // Avoid issues with displaying of cropped images (from https://stackoverflow.com/a/46965963/343108)
+            let ciContext = CIContext()
+            if let cgImage = ciContext.createCGImage(visionImage, from: visionImage.extent) {
+                visionImageView.image = UIImage(cgImage: cgImage)
+                let containerSize = self.view.bounds.size
+                let imageSize = min(containerSize.width * 0.9, visionImage.extent.width)
+                visionImageView.frame = CGRect(
+                    x: (containerSize.width - imageSize)/2,
+                    y: (containerSize.height - imageSize)/2,
+                    width: imageSize,
+                    height:imageSize)
+            }
+        } else {
+            visionImageView.isHidden = true
+        }
+#endif
+
         if let letterResults = letterCandidates.results() {
             boardTextView.text = letterResults.joined()
             boardTextView.isHidden = false
