@@ -193,6 +193,13 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             } else {
                 letterCandidates.reset()
             }
+            if let letterResults = letterCandidates.results() {
+                let words = Words(letters: letterResults)
+                DispatchQueue.main.async {
+                    self.present(WordsViewController(words: words), animated: true, completion: nil)
+                    return
+                }
+            }
             DispatchQueue.main.async {
                 self.reticleView.detectionConfidence = min(detectionConfidence, 1.0)
                 self.showMatchRect(visionImage:visionImage)

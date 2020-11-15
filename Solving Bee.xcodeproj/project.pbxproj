@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFE325609B3200523A8B /* LetterCandidates.swift */; };
 		9178EFE925609B6100523A8B /* ReticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFE825609B6100523A8B /* ReticleView.swift */; };
+		9178EFF42560A1B400523A8B /* Words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF32560A1B400523A8B /* Words.swift */; };
+		9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF62560AE8100523A8B /* WordsViewController.swift */; };
 		91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D52552343B004C99D7 /* AppDelegate.swift */; };
 		91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D72552343B004C99D7 /* SceneDelegate.swift */; };
 		91BF63DA2552343B004C99D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D92552343B004C99D7 /* ViewController.swift */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		9178EFE325609B3200523A8B /* LetterCandidates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterCandidates.swift; sourceTree = "<group>"; };
 		9178EFE825609B6100523A8B /* ReticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReticleView.swift; sourceTree = "<group>"; };
+		9178EFF32560A1B400523A8B /* Words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
+		9178EFF62560AE8100523A8B /* WordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsViewController.swift; sourceTree = "<group>"; };
 		91BF63D22552343B004C99D7 /* Solving Bee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solving Bee.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91BF63D52552343B004C99D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91BF63D72552343B004C99D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				9178EFE325609B3200523A8B /* LetterCandidates.swift */,
+				9178EFF32560A1B400523A8B /* Words.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -56,6 +61,7 @@
 			children = (
 				91BF63EE255236DE004C99D7 /* PreviewView.swift */,
 				9178EFE825609B6100523A8B /* ReticleView.swift */,
+				9178EFF62560AE8100523A8B /* WordsViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -177,11 +183,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */,
 				91BF63DA2552343B004C99D7 /* ViewController.swift in Sources */,
 				91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */,
 				91BF63FC25523C01004C99D7 /* SolvingBeeModel.mlmodel in Sources */,
 				9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */,
 				91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */,
+				9178EFF42560A1B400523A8B /* Words.swift in Sources */,
 				91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */,
 				9178EFE925609B6100523A8B /* ReticleView.swift in Sources */,
 			);
