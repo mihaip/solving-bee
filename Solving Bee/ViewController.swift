@@ -184,6 +184,10 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     }
                 }
 
+#if SAVE_VISION_IMAGE
+                self.saveVisionImage(visionImage)
+#endif
+
                 detectionConfidence += letterCandidates.detectionConfidence()
             } else {
                 letterCandidates.reset()
@@ -204,7 +208,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             return
         }
     }
-
 
     func showMatchRect(visionImage: CIImage?) {
 #if SHOW_VISION_IMAGE
@@ -235,6 +238,17 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
 
+    func saveVisionImage(_ visionImage: CIImage) {
+        let filename = ISO8601DateFormatter.string(from: Date(), timeZone: TimeZone.current, formatOptions: [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withFractionalSeconds]) + ".png";
+        print(filename)
+        let ciContext = CIContext()
+        do {
+            let destinationUrl = try FileManager.default.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename)
+            try ciContext.writePNGRepresentation(of: visionImage, to: destinationUrl, format: CIFormat.RGBA8, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!)
+        } catch {
+            print("Could not save vision image: \(error)")
+        }
+    }
 
 }
 
