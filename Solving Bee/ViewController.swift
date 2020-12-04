@@ -1,8 +1,6 @@
 import AVFoundation
 import UIKit
 import Vision
-import CoreImage
-import CoreImage.CIFilterBuiltins
 
 let BOARD_DETECTION_MIN_CONFIDENCE: VNConfidence = 0.2
 
@@ -132,10 +130,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     let image = CIImage(cvPixelBuffer: imageBuffer)
                     let cropRect = VNImageRectForNormalizedRect(visionRect, Int(image.extent.size.width), Int(image.extent.size.height))
                     let croppedImage = image.cropped(to:cropRect)
-                    let filter = CIFilter.colorControls()
-                    filter.contrast = 3
-                    filter.saturation = 0
-                    filter.brightness = 0.8
+                    let filter = BoardImageFilter()
                     filter.inputImage = croppedImage
                     visionImage = filter.outputImage
                 }

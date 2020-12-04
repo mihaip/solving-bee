@@ -18,6 +18,8 @@
 		91BF63E22552343B004C99D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91BF63E02552343B004C99D7 /* LaunchScreen.storyboard */; };
 		91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63EE255236DE004C99D7 /* PreviewView.swift */; };
 		91BF63FC25523C01004C99D7 /* SolvingBeeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63FB25523C01004C99D7 /* SolvingBeeModel.mlmodel */; };
+		91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE554C257AE69100A0E42D /* BoardImageFilter.swift */; };
+		91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 91FE5550257AE80900A0E42D /* BoardImageFilter.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		91BF63E32552343B004C99D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91BF63EE255236DE004C99D7 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		91BF63FB25523C01004C99D7 /* SolvingBeeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = SolvingBeeModel.mlmodel; path = "Solving Bee/Resources/SolvingBeeModel.mlmodel"; sourceTree = SOURCE_ROOT; };
+		91FE554C257AE69100A0E42D /* BoardImageFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageFilter.swift; sourceTree = "<group>"; };
+		91FE5550257AE80900A0E42D /* BoardImageFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BoardImageFilter.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,9 +113,19 @@
 				9178EFE225609B2000523A8B /* Model */,
 				9178EFE725609B4D00523A8B /* Views */,
 				91BF63D92552343B004C99D7 /* ViewController.swift */,
+				91FE554B257AE66E00A0E42D /* Vision */,
 				9178EFEF2560A04E00523A8B /* Resources */,
 			);
 			path = "Solving Bee";
+			sourceTree = "<group>";
+		};
+		91FE554B257AE66E00A0E42D /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				91FE554C257AE69100A0E42D /* BoardImageFilter.swift */,
+				91FE5550257AE80900A0E42D /* BoardImageFilter.metal */,
+			);
+			path = Vision;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,9 +202,11 @@
 				91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */,
 				91BF63FC25523C01004C99D7 /* SolvingBeeModel.mlmodel in Sources */,
 				9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */,
+				91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */,
 				91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */,
 				9178EFF42560A1B400523A8B /* Words.swift in Sources */,
 				91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */,
+				91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */,
 				9178EFE925609B6100523A8B /* ReticleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,15 +348,22 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TG8S2SXA4G;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"SHOW_VISION_IMAGE=1",
+				);
 				INFOPLIST_FILE = "Solving Bee/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MTLLINKER_FLAGS = "-fcikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.persistent.Solving-Bee";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SHOW_VISION_IMAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -359,6 +382,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MTLLINKER_FLAGS = "-fcikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.persistent.Solving-Bee";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
