@@ -7,10 +7,6 @@ class LetterCandidates {
     private var storage: [Int: [String: Int]] = [:]
 
     func add(letter: String, index: Int) {
-        var letter = letter
-        if letter == "0" {
-            letter = "O"
-        }
         if !LETTERS.contains(letter) {
             return
         }

@@ -1,0 +1,36 @@
+<annotation>
+    <folder>Training Data</folder>
+    <filename>IMG_7043.JPG</filename>
+    <size>
+        <width>3024</width>
+        <height>4032</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Board</name>
+        <difficult>0</difficult>
+        <rotated_box>
+            <cx>1347</cx>
+            <cy>2102</cy>
+            <width>645</width>
+            <height>732</height>
+            <rot>6.264479</rot>
+        </rotated_box>
+        <polygon>
+            <x1>1018</x1>
+            <y1>2462</y1>
+            <x2>1662</x2>
+            <y2>2474</y2>
+            <x3>1676</x3>
+            <y3>1743</y3>
+            <x4>1031</x4>
+            <y4>1730</y4>
+        </polygon>
+        <bndbox>
+            <xmin>1018</xmin>
+            <ymin>1730</ymin>
+            <xmax>1676</xmax>
+            <ymax>2474</ymax>
+        </bndbox>
+    </object>
+</annotation>

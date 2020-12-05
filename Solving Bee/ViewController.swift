@@ -12,7 +12,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 #endif
     private var boardTextView: UILabel!
 
-    private var letterCandidates = LetterCandidates()
+    private let boardLetterExtractor = BoardLetterExtractor()
+    private let letterCandidates = LetterCandidates()
 
     private let captureSession = AVCaptureSession()
     let captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
@@ -38,7 +39,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         previewView.session = captureSession
 
         do {
-            let model = try VNCoreMLModel(for: SolvingBeeModel(configuration: MLModelConfiguration()).model)
+            let model = try VNCoreMLModel(for: BoardModel(configuration: MLModelConfiguration()).model)
             boardDetectionRequest = VNCoreMLRequest(model: model)
         } catch {
             print("Could not create Vision request for board detector")
@@ -130,57 +131,20 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
                     let image = CIImage(cvPixelBuffer: imageBuffer)
                     let cropRect = VNImageRectForNormalizedRect(visionRect, Int(image.extent.size.width), Int(image.extent.size.height))
                     let croppedImage = image.cropped(to:cropRect)
+                    // Need to offset the cropped image, otherwise various
+                    // operations won't work correctly on it (e.g. displaying in
+                    // an UIImageView or running an object detection request).
+                    let transformedImage = croppedImage.transformed(by: CGAffineTransform(translationX: -croppedImage.extent.origin.x, y: -croppedImage.extent.origin.y))
                     let filter = BoardImageFilter()
-                    filter.inputImage = croppedImage
+                    filter.inputImage = transformedImage
                     visionImage = filter.outputImage
                 }
             }
 
             if let visionImage = visionImage {
-                let textRequest = VNRecognizeTextRequest()
-                textRequest.customWords = LETTERS
-                textRequest.recognitionLevel = .accurate
-                textRequest.minimumTextHeight = 1.0/16.0
-                textRequest.usesLanguageCorrection = true
-                let handler = VNImageRequestHandler(ciImage: visionImage, options: [:])
-                try handler.perform([textRequest])
-                let textObservations = textRequest.results as? [VNRecognizedTextObservation]
-                if let textObservations = textObservations {
-                    print("textObservations", textObservations.count)
-                    for textObservation in textObservations {
-                        guard let candidate = textObservation.topCandidates(1).first else {continue}
-                        if candidate.string.count != 1 {
-                            continue
-                        }
-                        let x = textObservation.boundingBox.midX - 0.5
-                        let y = textObservation.boundingBox.midY - 0.5
-                        let distance = Double(sqrt(x * x + y * y))
-                        let azimuth = Double(atan2(y, x))
-                        var letterIndex: Int?
-                        if (distance < 0.05) {
-                            letterIndex = 0
-                        } else if (distance > 0.2 && distance < 0.6) {
-                            func closeTo(_ value: Double) -> Bool {
-                                return abs(azimuth - value) < Double.pi / 10
-                            }
-                            if (closeTo(Double.pi / 2)) {
-                                letterIndex = 1
-                            } else if (closeTo(Double.pi / 6)) {
-                                letterIndex = 2
-                            } else if (closeTo(-Double.pi / 6)) {
-                                letterIndex = 3
-                            } else if (closeTo(-Double.pi / 2)) {
-                                letterIndex = 4
-                            } else if (closeTo(-Double.pi * 5.0/6.0)) {
-                                letterIndex = 5
-                            } else if (closeTo(Double.pi * 5.0/6.0)) {
-                                letterIndex = 6
-                            }
-                        }
-                        if let letterIndex = letterIndex {
-                            letterCandidates.add(letter: candidate.string, index: letterIndex)
-                        }
-                        print("    candidate", candidate.string, letterIndex, distance, azimuth)
+                if let boardLetters = boardLetterExtractor.extractFrom(image: visionImage) {
+                    for boardLetter in boardLetters {
+                        letterCandidates.add(letter: boardLetter.letter, index: boardLetter.index)
                     }
                 }
 
@@ -213,18 +177,14 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 #if SHOW_VISION_IMAGE
         if let visionImage = visionImage {
             visionImageView.isHidden = false
-            // Avoid issues with displaying of cropped images (from https://stackoverflow.com/a/46965963/343108)
-            let ciContext = CIContext()
-            if let cgImage = ciContext.createCGImage(visionImage, from: visionImage.extent) {
-                visionImageView.image = UIImage(cgImage: cgImage)
-                let containerSize = self.view.bounds.size
-                let imageSize = min(containerSize.width * 0.9, visionImage.extent.width)
-                visionImageView.frame = CGRect(
-                    x: (containerSize.width - imageSize)/2,
-                    y: (containerSize.height - imageSize)/2,
-                    width: imageSize,
-                    height:imageSize)
-            }
+            visionImageView.image = UIImage(ciImage: visionImage)
+            let containerSize = self.view.bounds.size
+            let imageSize = min(containerSize.width * 0.9, visionImage.extent.width)
+            visionImageView.frame = CGRect(
+                x: (containerSize.width - imageSize)/2,
+                y: (containerSize.height - imageSize)/2,
+                width: imageSize,
+                height:imageSize)
         } else {
             visionImageView.isHidden = true
         }
@@ -249,6 +209,5 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             print("Could not save vision image: \(error)")
         }
     }
-
 }
 

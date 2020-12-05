@@ -1,0 +1,36 @@
+<annotation>
+    <folder>Testing Data</folder>
+    <filename>IMG_7040.JPG</filename>
+    <size>
+        <width>3024</width>
+        <height>4032</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Board</name>
+        <difficult>0</difficult>
+        <rotated_box>
+            <cx>1356</cx>
+            <cy>2140</cy>
+            <width>592</width>
+            <height>583</height>
+            <rot>0.166553</rot>
+        </rotated_box>
+        <polygon>
+            <x1>1113</x1>
+            <y1>2476</y1>
+            <x2>1696</x2>
+            <y2>2378</y2>
+            <x3>1599</x3>
+            <y3>1805</y3>
+            <x4>1017</x4>
+            <y4>1903</y4>
+        </polygon>
+        <bndbox>
+            <xmin>1017</xmin>
+            <ymin>1805</ymin>
+            <xmax>1696</xmax>
+            <ymax>2476</ymax>
+        </bndbox>
+    </object>
+</annotation>

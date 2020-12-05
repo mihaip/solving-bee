@@ -1,0 +1,19 @@
+<annotation>
+    <folder>Letters Training Data</folder>
+    <filename>2020-12-04T14:43:21.825-08:00.png</filename>
+    <size>
+        <width>434</width>
+        <height>354</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>I</name>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>194</xmin>
+            <ymin>157</ymin>
+            <xmax>215</xmax>
+            <ymax>203</ymax>
+        </bndbox>
+    </object>
+</annotation>
