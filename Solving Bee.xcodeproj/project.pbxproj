@@ -18,6 +18,7 @@
 		91BF63E22552343B004C99D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91BF63E02552343B004C99D7 /* LaunchScreen.storyboard */; };
 		91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63EE255236DE004C99D7 /* PreviewView.swift */; };
 		91BF63FC25523C01004C99D7 /* BoardModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63FB25523C01004C99D7 /* BoardModel.mlmodel */; };
+		91FC40A1259AA150008C6C1D /* BoardImageExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */; };
 		91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE554C257AE69100A0E42D /* BoardImageFilter.swift */; };
 		91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 91FE5550257AE80900A0E42D /* BoardImageFilter.metal */; };
 		91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */; };
@@ -38,6 +39,7 @@
 		91BF63E32552343B004C99D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91BF63EE255236DE004C99D7 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		91BF63FB25523C01004C99D7 /* BoardModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = BoardModel.mlmodel; path = "Solving Bee/Resources/BoardModel.mlmodel"; sourceTree = SOURCE_ROOT; };
+		91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageExtractor.swift; sourceTree = "<group>"; };
 		91FE554C257AE69100A0E42D /* BoardImageFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageFilter.swift; sourceTree = "<group>"; };
 		91FE5550257AE80900A0E42D /* BoardImageFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BoardImageFilter.metal; sourceTree = "<group>"; };
 		91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LettersModel.mlmodel; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				91FE554C257AE69100A0E42D /* BoardImageFilter.swift */,
 				91FE5550257AE80900A0E42D /* BoardImageFilter.metal */,
 				91FE5563257AFD2C00A0E42D /* BoardLetterExtractor.swift */,
+				91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */,
 			);
 			path = Vision;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */,
 				91FE5564257AFD2C00A0E42D /* BoardLetterExtractor.swift in Sources */,
 				91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */,
+				91FC40A1259AA150008C6C1D /* BoardImageExtractor.swift in Sources */,
 				91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */,
 				9178EFF42560A1B400523A8B /* Words.swift in Sources */,
 				91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */,

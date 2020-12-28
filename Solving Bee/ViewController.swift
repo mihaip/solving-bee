@@ -1,8 +1,5 @@
 import AVFoundation
 import UIKit
-import Vision
-
-let BOARD_DETECTION_MIN_CONFIDENCE: VNConfidence = 0.2
 
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     private var previewView: PreviewView!
@@ -12,6 +9,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 #endif
     private var boardTextView: UILabel!
 
+    private let boardImageExtractor = BoardImageExtractor()
     private let boardLetterExtractor = BoardLetterExtractor()
     private let letterCandidates = LetterCandidates()
 
@@ -20,8 +18,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var captureDevice: AVCaptureDevice?
     var videoDataOutput = AVCaptureVideoDataOutput()
     let videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
-
-    private var boardDetectionRequest: VNCoreMLRequest!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,13 +33,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         self.view.addSubview(reticleView)
 
         previewView.session = captureSession
-
-        do {
-            let model = try VNCoreMLModel(for: BoardModel(configuration: MLModelConfiguration()).model)
-            boardDetectionRequest = VNCoreMLRequest(model: model)
-        } catch {
-            print("Could not create Vision request for board detector")
-        }
 
 #if SHOW_VISION_IMAGE
         visionImageView = UIImageView(frame: self.view.bounds)
@@ -116,61 +105,36 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // MARK AVCaptureVideoDataOutputSampleBufferDelegate
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        do {
-            // This is where we detect the board.
-            let visionHandler = VNImageRequestHandler(cmSampleBuffer: sampleBuffer, orientation: .up, options: [:])
-            try visionHandler.perform([boardDetectionRequest])
-            var visionImage: CIImage?
-            var detectionConfidence: Double = 0.0
-            if let results = boardDetectionRequest.results as? [VNDetectedObjectObservation] {
-                let filteredResults = results.filter { $0.confidence > BOARD_DETECTION_MIN_CONFIDENCE }
-                if !filteredResults.isEmpty {
-                    detectionConfidence = Double(filteredResults[0].confidence)
-                    let visionRect = filteredResults[0].boundingBox
-                    let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
-                    let image = CIImage(cvPixelBuffer: imageBuffer)
-                    let cropRect = VNImageRectForNormalizedRect(visionRect, Int(image.extent.size.width), Int(image.extent.size.height))
-                    let croppedImage = image.cropped(to:cropRect)
-                    // Need to offset the cropped image, otherwise various
-                    // operations won't work correctly on it (e.g. displaying in
-                    // an UIImageView or running an object detection request).
-                    let transformedImage = croppedImage.transformed(by: CGAffineTransform(translationX: -croppedImage.extent.origin.x, y: -croppedImage.extent.origin.y))
-                    let filter = BoardImageFilter()
-                    filter.inputImage = transformedImage
-                    visionImage = filter.outputImage
+        var visionImage:  CIImage?
+        var detectionConfidence: Double = 0.0
+        if let (boardImage, boardImageConfidence) = boardImageExtractor.extractFrom(sampleBuffer: sampleBuffer) {
+
+            if let boardLetters = boardLetterExtractor.extractFrom(image: boardImage) {
+                for boardLetter in boardLetters {
+                    letterCandidates.add(letter: boardLetter.letter, index: boardLetter.index)
                 }
             }
-
-            if let visionImage = visionImage {
-                if let boardLetters = boardLetterExtractor.extractFrom(image: visionImage) {
-                    for boardLetter in boardLetters {
-                        letterCandidates.add(letter: boardLetter.letter, index: boardLetter.index)
-                    }
-                }
 
 #if SAVE_VISION_IMAGE
                 self.saveVisionImage(visionImage)
 #endif
 
-                detectionConfidence += letterCandidates.detectionConfidence()
-            } else {
-                letterCandidates.reset()
-            }
-            if let letterResults = letterCandidates.results() {
-                let words = Words(letters: letterResults)
-                letterCandidates.reset()
-                DispatchQueue.main.async {
-                    self.present(WordsViewController(words: words), animated: true, completion: nil)
-                    return
-                }
-            }
+            visionImage = boardImage
+            detectionConfidence = boardImageConfidence + letterCandidates.detectionConfidence()
+        } else {
+            letterCandidates.reset()
+        }
+        if let letterResults = letterCandidates.results() {
+            let words = Words(letters: letterResults)
+            letterCandidates.reset()
             DispatchQueue.main.async {
-                self.reticleView.detectionConfidence = min(detectionConfidence, 1.0)
-                self.showMatchRect(visionImage:visionImage)
+                self.present(WordsViewController(words: words), animated: true, completion: nil)
+                return
             }
-        } catch {
-            print("Could not run board detection request")
-            return
+        }
+        DispatchQueue.main.async {
+            self.reticleView.detectionConfidence = min(detectionConfidence, 1.0)
+            self.showMatchRect(visionImage:visionImage)
         }
     }
 
@@ -201,7 +165,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
     func saveVisionImage(_ visionImage: CIImage) {
         let filename = ISO8601DateFormatter.string(from: Date(), timeZone: TimeZone.current, formatOptions: [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withFractionalSeconds]) + ".png";
-        print(filename)
         let ciContext = CIContext()
         do {
             let destinationUrl = try FileManager.default.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename)

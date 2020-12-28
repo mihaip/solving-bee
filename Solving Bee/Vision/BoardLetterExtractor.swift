@@ -21,7 +21,7 @@ class BoardLetterExtractor {
             let model = try VNCoreMLModel(for: LettersModel(configuration: MLModelConfiguration()).model)
             return VNCoreMLRequest(model: model)
         } catch {
-            print("Could not create Vision request for board detector")
+            print("Could not create Vision request for board letter detector")
             return nil
         }
     }()
