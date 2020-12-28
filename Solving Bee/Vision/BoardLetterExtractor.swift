@@ -26,23 +26,54 @@ class BoardLetterExtractor {
         }
     }()
 
+    private lazy var contoursRequest: VNDetectContoursRequest = {
+        let contoursRequest = VNDetectContoursRequest()
+        // No need to adjust the contrast, the filter already does that.
+        contoursRequest.contrastAdjustment = 1.0
+        return contoursRequest
+    }()
+
     func extractFrom(image: CIImage) -> [BoardLetter]? {
         let handler = VNImageRequestHandler(ciImage: image, options: [:])
         do {
             if let letterDetectionRequest = letterDetectionRequest {
-                try handler.perform([textRequest, letterDetectionRequest])
+                try handler.perform([contoursRequest, textRequest, letterDetectionRequest])
             } else {
-                try handler.perform([textRequest])
+                try handler.perform([contoursRequest, textRequest])
             }
         } catch {
             print("Could not run board detection request")
             return nil
         }
 
+        // Figure out where the center of the letters is so that we can compute
+        // polar coordinates relative to it. Contour detection is probably
+        // overkill for this.
+        var centerX: CGFloat = 0.5
+        var centerY: CGFloat = 0.5
+        if let contourObservations = contoursRequest.results as? [VNContoursObservation] {
+            if let contourObservation = contourObservations.first {
+                var minX: CGFloat = 1.0
+                var maxX: CGFloat = 0.0
+                var minY: CGFloat = 1.0
+                var maxY: CGFloat = 0.0
+                contourObservation.topLevelContours
+                    .map{ $0.normalizedPath.boundingBox }
+                    .filter{ $0.height >= 0.02 && $0.height <= 0.1 && $0.width >= 0.02 && $0.width <= 0.1 }
+                    .forEach{ box in
+                        minX = min(minX, box.minX)
+                        minY = min(minY, box.minY)
+                        maxX = max(maxX, box.maxY)
+                        maxY = max(maxY, box.maxY)
+                    }
+                centerX = (minX + maxX) / 2.0
+                centerY = (minY + maxY) / 2.0
+            }
+        }
         var result = [BoardLetter]()
         func addCandidate(candidate: String, boundingBox: CGRect) {
-            let x = boundingBox.midX - 0.5
-            let y = boundingBox.midY - 0.5
+            let x = boundingBox.midX - centerX
+            let y = boundingBox.midY - centerY
             let distance = Double(sqrt(x * x + y * y))
             let azimuth = Double(atan2(y, x))
             var letterIndex: Int?
@@ -66,16 +97,13 @@ class BoardLetterExtractor {
                     letterIndex = 6
                 }
             }
-            print("    candidate", candidate, letterIndex, distance, azimuth)
             if let letterIndex = letterIndex {
                 result.append(BoardLetter(letter: candidate, index: letterIndex))
             }
 
         }
 
-        let textObservations = textRequest.results as? [VNRecognizedTextObservation]
-        if let textObservations = textObservations {
-            print("textObservations", textObservations.count)
+        if let textObservations = textRequest.results as? [VNRecognizedTextObservation] {
             for textObservation in textObservations {
                 guard let candidate = textObservation.topCandidates(1).first else {continue}
                 if candidate.string.count != 1 {
@@ -87,7 +115,6 @@ class BoardLetterExtractor {
 
         if let letterResults = letterDetectionRequest?.results as? [VNRecognizedObjectObservation] {
             for letterResult in letterResults {
-                print("letterResult", letterResult)
                 if letterResult.confidence > 0.3 {
                     for letterLabel in letterResult.labels {
                         addCandidate(candidate: letterLabel.identifier, boundingBox: letterResult.boundingBox)

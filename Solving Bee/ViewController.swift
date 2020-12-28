@@ -158,6 +158,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             }
             if let letterResults = letterCandidates.results() {
                 let words = Words(letters: letterResults)
+                letterCandidates.reset()
                 DispatchQueue.main.async {
                     self.present(WordsViewController(words: words), animated: true, completion: nil)
                     return
