@@ -1,24 +1,37 @@
 import Foundation
 
 class Words {
+    private static var dictionary: [String]? = {
+        if let dictionaryPath = Bundle.main.path(forResource: "dictionary", ofType: "txt") {
+            do {
+                let dictionaryStr = try String(contentsOfFile: dictionaryPath)
+                return dictionaryStr.components(separatedBy: "\n")
+            } catch {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }()
     public let loaded: Bool
     public let words: [String]
 
     init(letters: [String]) {
-        let sorted = letters.sorted()
-        let rotationOffset = sorted.firstIndex(of: letters[0])!
-        var rotatedAndLowered: [String] = []
-        for i in 0...6 {
-            rotatedAndLowered.append(sorted[(i + rotationOffset) % sorted.count].lowercased())
-        }
-        let url = "https://storage.googleapis.com/spelling-bee/\(rotatedAndLowered.joined()).txt"
-        do {
-            let wordsText = try String(contentsOf: URL(string: url)!)
-            let splitWords = wordsText.split(separator:"\n")
-            // Drop the score that's last in the file
-            words = splitWords.dropLast().map { String($0) }
+        if let dictionary = Words.dictionary {
+            let letterSet = Set(letters)
+            var matchedWords = [String]()
+            for word in dictionary {
+                let wordSet = Set(word.map(String.init))
+                if !wordSet.contains(letters[0]) {
+                    continue
+                }
+                if wordSet.subtracting(letterSet).isEmpty {
+                    matchedWords.append(word)
+                }
+            }
+            words = matchedWords
             loaded = true
-        } catch {
+        } else {
             words = []
             loaded = false
         }
