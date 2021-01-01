@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     private var previewView: PreviewView!
     private var reticleView: ReticleView!
 #if SHOW_VISION_IMAGE
@@ -102,6 +102,17 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         captureSession.startRunning()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        videoDataOutput.connection(with: AVMediaType.video)?.isEnabled = true
+    }
+
+
+    override  func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        videoDataOutput.connection(with: AVMediaType.video)?.isEnabled = false
+    }
+
     // MARK AVCaptureVideoDataOutputSampleBufferDelegate
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
@@ -128,7 +139,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             let words = Words(letters: letterResults)
             letterCandidates.reset()
             DispatchQueue.main.async {
-                self.present(WordsViewController(words: words), animated: true, completion: nil)
+                self.navigationController?.pushViewController(WordsViewController(words: words), animated: true)
+//                self.present(, completion: nil)
                 return
             }
         }

@@ -13,13 +13,14 @@
 		9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF62560AE8100523A8B /* WordsViewController.swift */; };
 		91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D52552343B004C99D7 /* AppDelegate.swift */; };
 		91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D72552343B004C99D7 /* SceneDelegate.swift */; };
-		91BF63DA2552343B004C99D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D92552343B004C99D7 /* ViewController.swift */; };
+		91BF63DA2552343B004C99D7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D92552343B004C99D7 /* ScanningViewController.swift */; };
 		91BF63DF2552343B004C99D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91BF63DE2552343B004C99D7 /* Assets.xcassets */; };
 		91BF63E22552343B004C99D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91BF63E02552343B004C99D7 /* LaunchScreen.storyboard */; };
 		91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63EE255236DE004C99D7 /* PreviewView.swift */; };
 		91BF63FC25523C01004C99D7 /* BoardModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63FB25523C01004C99D7 /* BoardModel.mlmodel */; };
 		91FC40A1259AA150008C6C1D /* BoardImageExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */; };
 		91FC40A6259D02FA008C6C1D /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 91FC40A5259D02FA008C6C1D /* dictionary.txt */; };
+		91FC40AC259EB045008C6C1D /* WordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40AB259EB045008C6C1D /* WordViewController.swift */; };
 		91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE554C257AE69100A0E42D /* BoardImageFilter.swift */; };
 		91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 91FE5550257AE80900A0E42D /* BoardImageFilter.metal */; };
 		91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */; };
@@ -34,7 +35,7 @@
 		91BF63D22552343B004C99D7 /* Solving Bee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solving Bee.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91BF63D52552343B004C99D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91BF63D72552343B004C99D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		91BF63D92552343B004C99D7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		91BF63D92552343B004C99D7 /* ScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
 		91BF63DE2552343B004C99D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91BF63E12552343B004C99D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91BF63E32552343B004C99D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -42,6 +43,7 @@
 		91BF63FB25523C01004C99D7 /* BoardModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = BoardModel.mlmodel; path = "Solving Bee/Resources/BoardModel.mlmodel"; sourceTree = SOURCE_ROOT; };
 		91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageExtractor.swift; sourceTree = "<group>"; };
 		91FC40A5259D02FA008C6C1D /* dictionary.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
+		91FC40AB259EB045008C6C1D /* WordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewController.swift; sourceTree = "<group>"; };
 		91FE554C257AE69100A0E42D /* BoardImageFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageFilter.swift; sourceTree = "<group>"; };
 		91FE5550257AE80900A0E42D /* BoardImageFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BoardImageFilter.metal; sourceTree = "<group>"; };
 		91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LettersModel.mlmodel; sourceTree = "<group>"; };
@@ -73,7 +75,9 @@
 			children = (
 				91BF63EE255236DE004C99D7 /* PreviewView.swift */,
 				9178EFE825609B6100523A8B /* ReticleView.swift */,
+				91BF63D92552343B004C99D7 /* ScanningViewController.swift */,
 				9178EFF62560AE8100523A8B /* WordsViewController.swift */,
+				91FC40AB259EB045008C6C1D /* WordViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -122,7 +126,6 @@
 				9178EFEC25609EE400523A8B /* App */,
 				9178EFE225609B2000523A8B /* Model */,
 				9178EFE725609B4D00523A8B /* Views */,
-				91BF63D92552343B004C99D7 /* ViewController.swift */,
 				91FE554B257AE66E00A0E42D /* Vision */,
 				9178EFEF2560A04E00523A8B /* Resources */,
 			);
@@ -211,7 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */,
-				91BF63DA2552343B004C99D7 /* ViewController.swift in Sources */,
+				91BF63DA2552343B004C99D7 /* ScanningViewController.swift in Sources */,
 				91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */,
 				91BF63FC25523C01004C99D7 /* BoardModel.mlmodel in Sources */,
 				9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */,
@@ -222,6 +225,7 @@
 				9178EFF42560A1B400523A8B /* Words.swift in Sources */,
 				91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */,
 				91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */,
+				91FC40AC259EB045008C6C1D /* WordViewController.swift in Sources */,
 				91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */,
 				9178EFE925609B6100523A8B /* ReticleView.swift in Sources */,
 			);

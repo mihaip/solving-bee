@@ -39,4 +39,13 @@ class WordsViewController: UITableViewController {
 
         return cell
     }
+
+    // Mark: - Table view delegate
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (words.loaded) {
+            let word = words.words[indexPath.row]
+            self.navigationController?.pushViewController(WordViewController(word: word), animated:true)
+        }
+    }
 }
