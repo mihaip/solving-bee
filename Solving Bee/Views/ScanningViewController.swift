@@ -107,8 +107,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         videoDataOutput.connection(with: AVMediaType.video)?.isEnabled = true
     }
 
-
-    override  func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         videoDataOutput.connection(with: AVMediaType.video)?.isEnabled = false
     }
@@ -140,7 +139,6 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
             letterCandidates.reset()
             DispatchQueue.main.async {
                 self.navigationController?.pushViewController(WordsViewController(words: words), animated: true)
-//                self.present(, completion: nil)
                 return
             }
         }
