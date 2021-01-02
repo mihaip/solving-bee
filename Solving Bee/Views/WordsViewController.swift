@@ -15,8 +15,13 @@ class WordsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WordCell")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Words might have been revealed, easiest to regenerate all cells.
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

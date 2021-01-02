@@ -1,14 +1,25 @@
 import UIKit
 
 class WordViewController: UIReferenceLibraryViewController {
+    private let words: Words
+    private let index: Int
+    private let titleLabel: UILabel
+
     init(words: Words, index: Int) {
         let word = words.words[index]
+        self.words = words
+        self.index = index
+        titleLabel = UILabel()
+        titleLabel.attributedText = words.displayWord(at: index)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: titleLabel.font.pointSize)
+
         super.init(term: word)
         self.title = word
-        let wordLabel = UILabel()
-        wordLabel.attributedText = words.displayWord(at: index)
-        wordLabel.font = UIFont.boldSystemFont(ofSize: wordLabel.font.pointSize)
-        self.navigationItem.titleView = wordLabel
+        self.navigationItem.titleView = titleLabel
+
+        if (!words.isWordRevealed(at: index)) {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reveal", style: .plain, target: self, action: #selector(revealWord(sender:)))
+        }
     }
 
     required init(coder: NSCoder) {
@@ -27,5 +38,11 @@ class WordViewController: UIReferenceLibraryViewController {
                 navigationController.interactivePopGestureRecognizer?.isEnabled = false
             }
         }
+    }
+
+    @objc func revealWord(sender: UIBarButtonItem) {
+        words.revealWord(at: index)
+        titleLabel.attributedText = words.displayWord(at: index)
+        self.navigationItem.rightBarButtonItem = nil
     }
 }
