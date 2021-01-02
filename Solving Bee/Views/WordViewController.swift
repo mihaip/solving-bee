@@ -1,9 +1,14 @@
 import UIKit
 
 class WordViewController: UIReferenceLibraryViewController {
-    init(word: String) {
+    init(words: Words, index: Int) {
+        let word = words.words[index]
         super.init(term: word)
         self.title = word
+        let wordLabel = UILabel()
+        wordLabel.attributedText = words.displayWord(at: index)
+        wordLabel.font = UIFont.boldSystemFont(ofSize: wordLabel.font.pointSize)
+        self.navigationItem.titleView = wordLabel
     }
 
     required init(coder: NSCoder) {

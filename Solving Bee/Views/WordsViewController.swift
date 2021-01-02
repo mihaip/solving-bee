@@ -31,10 +31,13 @@ class WordsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WordCell", for: indexPath)
+        let textLabel = cell.textLabel!
         if (words.loaded) {
-            cell.textLabel!.text = words.words[indexPath.row]
+            textLabel.attributedText = words.displayWord(at: indexPath.row)
+            textLabel.font = UIFont.boldSystemFont(ofSize: textLabel.font.pointSize)
         } else {
-            cell.textLabel!.text = "Could not load words"
+            textLabel.text = "Could not load words"
+            textLabel.textColor = UIColor.systemRed
         }
 
         return cell
@@ -44,8 +47,7 @@ class WordsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (words.loaded) {
-            let word = words.words[indexPath.row]
-            self.navigationController?.pushViewController(WordViewController(word: word), animated:true)
+            self.navigationController?.pushViewController(WordViewController(words: words, index: indexPath.row), animated:true)
         }
     }
 }
