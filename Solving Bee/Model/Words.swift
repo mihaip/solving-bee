@@ -17,6 +17,7 @@ class Words {
         }
     }()
     private let requiredLetter: String
+    private var revaledAllWords = false
     private var revealedWords = Set<Int>()
 
     public let loaded: Bool
@@ -47,7 +48,7 @@ class Words {
 
     func displayWord(at index: Int) -> NSAttributedString {
         let word = words[index]
-        let reveal = revealedWords.contains(index)
+        let reveal = isWordRevealed(at: index)
         let result = NSMutableAttributedString()
         for (i, piece) in word.split(separator: requiredLetter[requiredLetter.startIndex], maxSplits: Int.max, omittingEmptySubsequences: false).enumerated() {
             if i > 0 {
@@ -69,7 +70,11 @@ class Words {
         revealedWords.insert(index)
     }
 
+    func revealAllWords() {
+        revaledAllWords = true
+    }
+
     func isWordRevealed(at index: Int) -> Bool {
-        return revealedWords.contains(index)
+        return revaledAllWords || revealedWords.contains(index)
     }
 }

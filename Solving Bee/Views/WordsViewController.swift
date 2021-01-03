@@ -7,6 +7,7 @@ class WordsViewController: UITableViewController {
         self.words = words
         super.init(style: .plain)
         self.title = "Words"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reveal All", style: .plain, target: self, action: #selector(revealAllWords(sender:)))
     }
 
     required init?(coder: NSCoder) {
@@ -37,6 +38,12 @@ class WordsViewController: UITableViewController {
                 warmupWindow.removeFromSuperview()
             }
         }
+    }
+
+    @objc func revealAllWords(sender: UIBarButtonItem) {
+        words.revealAllWords()
+        self.navigationItem.rightBarButtonItem = nil
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
