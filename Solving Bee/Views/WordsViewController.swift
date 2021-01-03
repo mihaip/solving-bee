@@ -6,7 +6,12 @@ class WordsViewController: UITableViewController {
     init(words: Words) {
         self.words = words
         super.init(style: .plain)
+
+        let titleLabel = UILabel()
+        titleLabel.attributedText = words.displayTitle()
+        titleLabel.font = UIFont.boldSystemFont(ofSize: titleLabel.font.pointSize)
         self.title = "Words"
+        self.navigationItem.titleView = titleLabel
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reveal All", style: .plain, target: self, action: #selector(revealAllWords(sender:)))
     }
 

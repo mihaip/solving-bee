@@ -16,7 +16,7 @@ class Words {
             return nil
         }
     }()
-    private let requiredLetter: String
+    private let letters: [String]
     private var revaledAllWords = false
     private var revealedWords = Set<Int>()
 
@@ -25,7 +25,7 @@ class Words {
 
 
     init(letters: [String]) {
-        requiredLetter = letters[0]
+        self.letters = letters
         if let dictionary = Words.dictionary {
             let letterSet = Set(letters)
             var matchedWords = [String]()
@@ -46,8 +46,21 @@ class Words {
         }
     }
 
+    func displayTitle() -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        for (i, letter) in letters.enumerated() {
+            if i == 0 {
+                result.append(NSAttributedString(string: letter, attributes: [.foregroundColor: Words.HIGHLIGHT_COLOR]))
+            } else {
+                result.append(NSAttributedString(string: letter))
+            }
+        }
+        return result
+    }
+
     func displayWord(at index: Int) -> NSAttributedString {
         let word = words[index]
+        let requiredLetter = letters[0]
         let reveal = isWordRevealed(at: index)
         let result = NSMutableAttributedString()
         for (i, piece) in word.split(separator: requiredLetter[requiredLetter.startIndex], maxSplits: Int.max, omittingEmptySubsequences: false).enumerated() {

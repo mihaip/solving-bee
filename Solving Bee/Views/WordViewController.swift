@@ -25,7 +25,6 @@ document.querySelectorAll("span.hg").forEach(el => {
         titleLabel.attributedText = words.displayWord(at: index)
         titleLabel.font = UIFont.boldSystemFont(ofSize: titleLabel.font.pointSize)
 
-
         super.init(term: word)
         self.title = word
         self.navigationItem.titleView = titleLabel
