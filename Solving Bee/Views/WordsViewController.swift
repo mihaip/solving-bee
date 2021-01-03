@@ -24,6 +24,21 @@ class WordsViewController: UITableViewController {
         self.tableView.reloadData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // UIReferenceLibraryViewController is slow to render the first time
+        // (presumably because dictionary data is loaded), so we trigger a
+        // throwaway instance to warm up the asset cache.
+        if let windowScene = self.view.window?.windowScene {
+            let warmupWindow = UIWindow(windowScene: windowScene)
+            warmupWindow.rootViewController = UIReferenceLibraryViewController(term: "intel")
+            warmupWindow.makeKeyAndVisible()
+            DispatchQueue.main.async {
+                warmupWindow.removeFromSuperview()
+            }
+        }
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -52,7 +67,10 @@ class WordsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (words.loaded) {
-            self.navigationController?.pushViewController(WordViewController(words: words, index: indexPath.row), animated:true)
+            // Can't animate the push because we end up with a broken transition
+            // due to how we force UIReferenceLibraryViewController to open a
+            // specific dictionary.
+            self.navigationController?.pushViewController(WordViewController(words: words, index: indexPath.row), animated:false)
         }
     }
 }
