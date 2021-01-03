@@ -46,7 +46,7 @@ class WordsViewController: UITableViewController {
         self.tableView.reloadData()
     }
 
-    // MARK: - Table view data source
+    // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -70,7 +70,7 @@ class WordsViewController: UITableViewController {
         return cell
     }
 
-    // Mark: - Table view delegate
+    // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (words.loaded) {

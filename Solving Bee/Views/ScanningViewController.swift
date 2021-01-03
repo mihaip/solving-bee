@@ -112,7 +112,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         videoDataOutput.connection(with: AVMediaType.video)?.isEnabled = false
     }
 
-    // MARK AVCaptureVideoDataOutputSampleBufferDelegate
+    // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         var visionImage:  CIImage?

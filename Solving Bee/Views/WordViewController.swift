@@ -86,6 +86,9 @@ document.querySelectorAll("span.hg").forEach(el => {
         definitionWebView?.evaluateJavaScript(WordViewController.SHOW_WORD_JS)
     }
 
+
+    // MARK: - UINavigationControllerDelegate
+
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         // Hide the word in the definition display too. The definition display
         // is implemented via a (locally rendered) WKWebView, so we need to run
@@ -101,6 +104,8 @@ document.querySelectorAll("span.hg").forEach(el => {
             }
         }
     }
+
+    // MARK: - WKNavigationDelegate
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if webView == definitionWebView {
