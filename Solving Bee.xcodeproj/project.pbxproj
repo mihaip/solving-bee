@@ -11,6 +11,7 @@
 		9178EFE925609B6100523A8B /* ReticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFE825609B6100523A8B /* ReticleView.swift */; };
 		9178EFF42560A1B400523A8B /* Words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF32560A1B400523A8B /* Words.swift */; };
 		9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF62560AE8100523A8B /* WordsViewController.swift */; };
+		91AA202125CD0B7E00631A75 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AA202025CD0B7E00631A75 /* SplashViewController.swift */; };
 		91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D52552343B004C99D7 /* AppDelegate.swift */; };
 		91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D72552343B004C99D7 /* SceneDelegate.swift */; };
 		91BF63DA2552343B004C99D7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BF63D92552343B004C99D7 /* ScanningViewController.swift */; };
@@ -21,6 +22,7 @@
 		91FC40A1259AA150008C6C1D /* BoardImageExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */; };
 		91FC40A6259D02FA008C6C1D /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 91FC40A5259D02FA008C6C1D /* dictionary.txt */; };
 		91FC40AC259EB045008C6C1D /* WordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40AB259EB045008C6C1D /* WordViewController.swift */; };
+		91FC40D125A19CB2008C6C1D /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC40D025A19CB2008C6C1D /* SplashView.swift */; };
 		91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE554C257AE69100A0E42D /* BoardImageFilter.swift */; };
 		91FE5551257AE80900A0E42D /* BoardImageFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 91FE5550257AE80900A0E42D /* BoardImageFilter.metal */; };
 		91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */; };
@@ -32,6 +34,7 @@
 		9178EFE825609B6100523A8B /* ReticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReticleView.swift; sourceTree = "<group>"; };
 		9178EFF32560A1B400523A8B /* Words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
 		9178EFF62560AE8100523A8B /* WordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsViewController.swift; sourceTree = "<group>"; };
+		91AA202025CD0B7E00631A75 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		91BF63D22552343B004C99D7 /* Solving Bee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solving Bee.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91BF63D52552343B004C99D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91BF63D72552343B004C99D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,6 +47,7 @@
 		91FC40A0259AA150008C6C1D /* BoardImageExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageExtractor.swift; sourceTree = "<group>"; };
 		91FC40A5259D02FA008C6C1D /* dictionary.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
 		91FC40AB259EB045008C6C1D /* WordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewController.swift; sourceTree = "<group>"; };
+		91FC40D025A19CB2008C6C1D /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		91FE554C257AE69100A0E42D /* BoardImageFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardImageFilter.swift; sourceTree = "<group>"; };
 		91FE5550257AE80900A0E42D /* BoardImageFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BoardImageFilter.metal; sourceTree = "<group>"; };
 		91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LettersModel.mlmodel; sourceTree = "<group>"; };
@@ -76,6 +80,8 @@
 				91BF63EE255236DE004C99D7 /* PreviewView.swift */,
 				9178EFE825609B6100523A8B /* ReticleView.swift */,
 				91BF63D92552343B004C99D7 /* ScanningViewController.swift */,
+				91FC40D025A19CB2008C6C1D /* SplashView.swift */,
+				91AA202025CD0B7E00631A75 /* SplashViewController.swift */,
 				9178EFF62560AE8100523A8B /* WordsViewController.swift */,
 				91FC40AB259EB045008C6C1D /* WordViewController.swift */,
 			);
@@ -214,7 +220,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9178EFF72560AE8100523A8B /* WordsViewController.swift in Sources */,
+				91FC40D125A19CB2008C6C1D /* SplashView.swift in Sources */,
 				91BF63DA2552343B004C99D7 /* ScanningViewController.swift in Sources */,
+				91AA202125CD0B7E00631A75 /* SplashViewController.swift in Sources */,
 				91BF63EF255236DE004C99D7 /* PreviewView.swift in Sources */,
 				91BF63FC25523C01004C99D7 /* BoardModel.mlmodel in Sources */,
 				9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */,
