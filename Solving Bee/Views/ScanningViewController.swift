@@ -2,6 +2,7 @@ import AVFoundation
 import UIKit
 
 class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+    private var dismiss: (() -> Void)
     private var previewView: PreviewView!
     private var reticleView: ReticleView!
 #if SHOW_VISION_IMAGE
@@ -18,6 +19,15 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
     var captureDevice: AVCaptureDevice?
     var videoDataOutput = AVCaptureVideoDataOutput()
     let videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
+
+    init(dismiss: @escaping (() -> Void)) {
+        self.dismiss = dismiss
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Unused")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +69,18 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
 
     func setupCamera() {
         guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .back) else {
-            print("Could not create capture device.")
+            let alert = UIAlertController(title: "Could not access camera", message: "Solving Bee needs camera access to find a Spelling Bee puzzle to solve.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: { _ in
+                self.dismiss()
+            }))
+            self.present(alert, animated: true, completion: nil)
             return
         }
         self.captureDevice = captureDevice

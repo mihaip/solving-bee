@@ -61,6 +61,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) uses the camera to find a Spelling Bee board to solve</string>
+	<string>$(PRODUCT_NAME) uses the camera to find a Spelling Bee puzzle to solve</string>
 </dict>
 </plist>
