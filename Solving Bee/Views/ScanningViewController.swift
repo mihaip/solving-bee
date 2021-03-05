@@ -13,6 +13,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
     private let boardImageExtractor = BoardImageExtractor()
     private let boardLetterExtractor = BoardLetterExtractor()
     private let letterCandidates = LetterCandidates()
+    private var consecutiveImageExtractionFailures = 0
 
     private let captureSession = AVCaptureSession()
     let captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
@@ -137,7 +138,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         var visionImage:  CIImage?
         var detectionConfidence: Double = 0.0
         if let (boardImage, boardImageConfidence) = boardImageExtractor.extractFrom(sampleBuffer: sampleBuffer) {
-
+            consecutiveImageExtractionFailures = 0
             if let boardLetters = boardLetterExtractor.extractFrom(image: boardImage) {
                 for boardLetter in boardLetters {
                     letterCandidates.add(letter: boardLetter.letter, index: boardLetter.index)
@@ -151,7 +152,12 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
             visionImage = boardImage
             detectionConfidence = boardImageConfidence + letterCandidates.detectionConfidence()
         } else {
-            letterCandidates.reset()
+            consecutiveImageExtractionFailures += 1
+            // If the user has pointed the camera in an entirely different
+            // direction, then previous results are not likely to be useful.
+            if consecutiveImageExtractionFailures > 10 {
+                letterCandidates.reset()
+            }
         }
         if let letterResults = letterCandidates.results() {
             let words = Words(letters: letterResults)
