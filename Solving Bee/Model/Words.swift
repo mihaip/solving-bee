@@ -76,6 +76,9 @@ class Words {
                 result.append(NSAttributedString(string: String(repeating:"_ ", count:piece.count)))
             }
         }
+        if isPangram(word) {
+            result.append(NSAttributedString(string: " ★", attributes: [.foregroundColor: Words.HIGHLIGHT_COLOR]))
+        }
         return result
     }
 
@@ -89,5 +92,9 @@ class Words {
 
     func isWordRevealed(at index: Int) -> Bool {
         return revaledAllWords || revealedWords.contains(index)
+    }
+
+    func isPangram(_ word: String) -> Bool {
+        return word.count >= 7 && Set(word).count == 7
     }
 }
