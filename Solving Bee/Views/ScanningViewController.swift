@@ -8,7 +8,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
 #if SHOW_VISION_IMAGE
     private var visionImageView: UIImageView!
 #endif
-    private var boardTextView: UILabel!
+    private var partialResultsTextView: UILabel!
 
     private let boardImageExtractor = BoardImageExtractor()
     private let boardLetterExtractor = BoardLetterExtractor()
@@ -50,13 +50,11 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         self.view.addSubview(visionImageView)
 #endif
 
-        let (boardTextFrame, _) = self.view.bounds.divided(atDistance: 120, from: .minYEdge)
-        boardTextView = UILabel(frame: boardTextFrame)
-        boardTextView.font = UIFont.systemFont(ofSize: 30)
-        boardTextView.textAlignment = .center
-        boardTextView.backgroundColor = UIColor.red
-        boardTextView.isHidden = true
-        self.view.addSubview(boardTextView)
+        partialResultsTextView = UILabel(frame: self.view.bounds)
+        partialResultsTextView.font = UIFont.boldSystemFont(ofSize: 30)
+        partialResultsTextView.textAlignment = .center
+        self.partialResultsTextView.attributedText = self.letterCandidates.partialDisplayResults()
+        self.navigationItem.titleView = partialResultsTextView
 
         self.view.backgroundColor = UIColor.black
 
@@ -164,6 +162,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
             }
         }
         DispatchQueue.main.async {
+            self.partialResultsTextView.attributedText = self.letterCandidates.partialDisplayResults()
             self.reticleView.detectionConfidence = min(detectionConfidence, 1.0)
             self.showMatchRect(visionImage:visionImage)
         }
@@ -185,13 +184,6 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
             visionImageView.isHidden = true
         }
 #endif
-
-        if let letterResults = letterCandidates.results() {
-            boardTextView.text = letterResults.joined()
-            boardTextView.isHidden = false
-        } else {
-            boardTextView.isHidden = true
-        }
     }
 
     func saveVisionImage(_ visionImage: CIImage) {

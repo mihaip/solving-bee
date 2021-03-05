@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class Words {
-    private static let HIGHLIGHT_COLOR = UIColor(red: 248.0/255.0, green: 205.0/255.0, blue: 5.0/255.0, alpha: 1)
+    static let HIGHLIGHT_COLOR = UIColor(red: 248.0/255.0, green: 205.0/255.0, blue: 5.0/255.0, alpha: 1)
 
     private static var dictionary: [String]? = {
         if let dictionaryPath = Bundle.main.path(forResource: "dictionary", ofType: "txt") {

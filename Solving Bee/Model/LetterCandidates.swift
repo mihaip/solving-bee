@@ -42,6 +42,31 @@ class LetterCandidates {
         return result
     }
 
+    func partialDisplayResults() -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        for i in 0...6 {
+            if let candidates = storage[i] {
+                var topCandidate: String?
+                var topCandidateCount = 0
+                for (candidate, count) in candidates {
+                    if (count > topCandidateCount) {
+                        topCandidate = candidate
+                        topCandidateCount = count
+                    }
+                }
+                if i == 0 {
+                    result.append(NSAttributedString(string: topCandidate!, attributes: [.foregroundColor: Words.HIGHLIGHT_COLOR]))
+                } else {
+                    result.append(NSAttributedString(string: topCandidate!))
+                }
+            } else {
+                result.append(NSAttributedString(string: "_"))
+            }
+            result.append(NSAttributedString(string: " "))
+        }
+        return result
+    }
+
     func detectionConfidence() -> Double {
         var matchedLetters = 0
         for i in 0...6 {
