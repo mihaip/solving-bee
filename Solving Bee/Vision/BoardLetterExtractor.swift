@@ -33,22 +33,27 @@ class BoardLetterExtractor {
         return contoursRequest
     }()
 
-    func extractFrom(image: CIImage) -> [BoardLetter]? {
+    func extractFrom(image: CIImage, isPrintBoard: Bool) -> [BoardLetter]? {
         let handler = VNImageRequestHandler(ciImage: image, options: [:])
         do {
-            if let letterDetectionRequest = letterDetectionRequest {
-                try handler.perform([contoursRequest, textRequest, letterDetectionRequest])
-            } else {
-                try handler.perform([contoursRequest, textRequest])
+            var requests: [VNRequest] = [textRequest]
+            // Figure out where the center of the letters is so that we can compute
+            // polar coordinates relative to it. Contour detection is probably
+            // overkill for this.
+            // We don't do this for the print board because the extra outline
+            // makes contour extraction harder.
+            if !isPrintBoard {
+                requests.append(contoursRequest)
             }
+            if let letterDetectionRequest = letterDetectionRequest {
+                requests.append(letterDetectionRequest)
+            }
+            try handler.perform(requests)
         } catch {
             print("Could not run board detection request")
             return nil
         }
 
-        // Figure out where the center of the letters is so that we can compute
-        // polar coordinates relative to it. Contour detection is probably
-        // overkill for this.
         var centerX: CGFloat = 0.5
         var centerY: CGFloat = 0.5
         if let contourObservations = contoursRequest.results as? [VNContoursObservation] {

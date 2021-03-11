@@ -24,12 +24,17 @@ class Words {
     public let words: [String]
 
 
-    init(letters: [String]) {
+    init(letters: [String], usePrintRules: Bool) {
         self.letters = letters
         if let dictionary = Words.dictionary {
             let letterSet = Set(letters)
             var matchedWords = [String]()
             for word in dictionary {
+                if usePrintRules && word.count < 5 {
+                    // Dictionary was generated for the digital version, which
+                    // allows 4 letter words.
+                    continue
+                }
                 let wordSet = Set(word.map(String.init))
                 if !wordSet.contains(letters[0]) {
                     continue

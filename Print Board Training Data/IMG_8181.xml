@@ -1,0 +1,19 @@
+<annotation>
+    <folder>Print Board Training Data</folder>
+    <filename>IMG_8181.jpeg</filename>
+    <size>
+        <width>1440</width>
+        <height>1920</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Board</name>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>311</xmin>
+            <ymin>880</ymin>
+            <xmax>906</xmax>
+            <ymax>1461</ymax>
+        </bndbox>
+    </object>
+</annotation>

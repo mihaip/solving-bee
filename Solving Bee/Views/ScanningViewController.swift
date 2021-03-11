@@ -137,9 +137,11 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         var visionImage:  CIImage?
         var detectionConfidence: Double = 0.0
-        if let (boardImage, boardImageConfidence) = boardImageExtractor.extractFrom(sampleBuffer: sampleBuffer) {
+        var usePrintRules: Bool = false
+        if let (boardImage, boardImageConfidence, isPrintBoard) = boardImageExtractor.extractFrom(sampleBuffer: sampleBuffer) {
             consecutiveImageExtractionFailures = 0
-            if let boardLetters = boardLetterExtractor.extractFrom(image: boardImage) {
+            usePrintRules = isPrintBoard
+            if let boardLetters = boardLetterExtractor.extractFrom(image: boardImage, isPrintBoard: isPrintBoard) {
                 for boardLetter in boardLetters {
                     letterCandidates.add(letter: boardLetter.letter, index: boardLetter.index)
                 }
@@ -160,7 +162,7 @@ class ScanningViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
             }
         }
         if let letterResults = letterCandidates.results() {
-            let words = Words(letters: letterResults)
+            let words = Words(letters: letterResults, usePrintRules: usePrintRules)
             letterCandidates.reset()
             DispatchQueue.main.async {
                 self.navigationController?.pushViewController(WordsViewController(words: words), animated: true)
