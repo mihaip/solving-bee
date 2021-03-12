@@ -121,9 +121,7 @@ class BoardLetterExtractor {
         if let letterResults = letterDetectionRequest?.results as? [VNRecognizedObjectObservation] {
             for letterResult in letterResults {
                 if letterResult.confidence > 0.3 {
-                    for letterLabel in letterResult.labels {
-                        addCandidate(candidate: letterLabel.identifier, boundingBox: letterResult.boundingBox)
-                    }
+                    addCandidate(candidate: letterResult.labels.first!.identifier, boundingBox: letterResult.boundingBox)
                 }
             }
         }
