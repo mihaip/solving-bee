@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SplashView: View {
     var begin: (() -> Void)?
+    var help: (() -> Void)?
 
     var body: some View {
         GeometryReader { metrics in
@@ -28,12 +29,16 @@ struct SplashView: View {
                 }
                 Text("Scan a New York Times Spelling Bee puzzle to get clues about the words it contains.")
                     .foregroundColor(.gray)
-                    .frame(width: metrics.size.width * 0.8, height: 140)
+                    .frame(width: metrics.size.width * 0.8, height: 100)
                 Spacer()
-                Text("Not affiliated with the New York Times.")
-                    .font(.footnote)
-                    .foregroundColor(Color(white:0.4))
-                    .frame(width: metrics.size.width * 0.8, height: 60)
+                Text("Learn more about where to find puzzles and how to scan them.")
+                    .foregroundColor(.blue)
+                    .underline()
+                    .multilineTextAlignment(.leading)
+                    .frame(width: metrics.size.width * 0.8, height: 100)
+                    .onTapGesture {
+                        help!()
+                    }
             }
             .frame(width: metrics.size.width, height: metrics.size.height)
         }

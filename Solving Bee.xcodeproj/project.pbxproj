@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9125D911260313B000D366FF /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9125D910260313B000D366FF /* HelpViewController.swift */; };
+		9125D9142603171600D366FF /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 9125D9132603171600D366FF /* help.html */; };
 		9178EFE425609B3200523A8B /* LetterCandidates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFE325609B3200523A8B /* LetterCandidates.swift */; };
 		9178EFE925609B6100523A8B /* ReticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFE825609B6100523A8B /* ReticleView.swift */; };
 		9178EFF42560A1B400523A8B /* Words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9178EFF32560A1B400523A8B /* Words.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9125D910260313B000D366FF /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		9125D9132603171600D366FF /* help.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = help.html; sourceTree = "<group>"; };
 		9178EFE325609B3200523A8B /* LetterCandidates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterCandidates.swift; sourceTree = "<group>"; };
 		9178EFE825609B6100523A8B /* ReticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReticleView.swift; sourceTree = "<group>"; };
 		9178EFF32560A1B400523A8B /* Words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
@@ -84,6 +88,7 @@
 				91AA202025CD0B7E00631A75 /* SplashViewController.swift */,
 				9178EFF62560AE8100523A8B /* WordsViewController.swift */,
 				91FC40AB259EB045008C6C1D /* WordViewController.swift */,
+				9125D910260313B000D366FF /* HelpViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -103,6 +108,7 @@
 				91BF63DE2552343B004C99D7 /* Assets.xcassets */,
 				91BF63FB25523C01004C99D7 /* BoardModel.mlmodel */,
 				91FC40A5259D02FA008C6C1D /* dictionary.txt */,
+				9125D9132603171600D366FF /* help.html */,
 				91BF63E32552343B004C99D7 /* Info.plist */,
 				91BF63E02552343B004C99D7 /* LaunchScreen.storyboard */,
 				91FE555D257AFC5F00A0E42D /* LettersModel.mlmodel */,
@@ -207,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91FC40A6259D02FA008C6C1D /* dictionary.txt in Resources */,
+				9125D9142603171600D366FF /* help.html in Resources */,
 				91BF63E22552343B004C99D7 /* LaunchScreen.storyboard in Resources */,
 				91BF63DF2552343B004C99D7 /* Assets.xcassets in Resources */,
 			);
@@ -232,6 +239,7 @@
 				91BF63D62552343B004C99D7 /* AppDelegate.swift in Sources */,
 				9178EFF42560A1B400523A8B /* Words.swift in Sources */,
 				91FE555E257AFC5F00A0E42D /* LettersModel.mlmodel in Sources */,
+				9125D911260313B000D366FF /* HelpViewController.swift in Sources */,
 				91BF63D82552343B004C99D7 /* SceneDelegate.swift in Sources */,
 				91FC40AC259EB045008C6C1D /* WordViewController.swift in Sources */,
 				91FE554D257AE69100A0E42D /* BoardImageFilter.swift in Sources */,
